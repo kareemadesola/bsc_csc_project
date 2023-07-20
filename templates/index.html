@@ -17,7 +17,12 @@
     </form>
     <div id="recommendations">
         {% if recommendations %}
-            Recommended exercises: {{ recommendations }}
+            <p>Recommended exercises:</p>
+            <ul>
+                {% for exercise in recommendations %}
+                <li>{{ exercise }}</li>
+                {% endfor %}
+            </ul>
         {% endif %}
     </div>
 </body>

@@ -1,6 +1,8 @@
+from typing import List
+
 from flask import Flask, request, render_template
-from typing import List, Any
-from data import SYMPTOM_MAPPING, DATASET
+
+from data import SYMPTOMS_OPTIONS
 from ml_model import generate_recommendations
 
 app = Flask(__name__)
@@ -8,7 +10,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index.html', symptoms=SYMPTOMS_OPTIONS)  # Pass the symptoms list to the template
 
 
 @app.route('/recommendations', methods=['POST'])

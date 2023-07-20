@@ -32,8 +32,9 @@ class MLModel:
         # Use the trained model to generate exercise recommendations based on analyzed symptoms
 
         # Make predictions using the trained model
-        predictions = self.model.predict(analyzed_symptoms).tolist()
-        return predictions
+        probabilities = self.model.predict_proba(analyzed_symptoms)
+        predicted_indices = [np.argmax(probability) for probability in probabilities]
+        return predicted_indices
 
 
 def train_model(dataset: Dict[str, Union[List[List[float]], List[Any]]]) -> MLModel:
@@ -76,17 +77,24 @@ def process_symptoms(symptoms: List[str]) -> List[List[float]]:
     return processed_symptoms
 
 
-def generate_recommendations(symptoms: List[str]) -> List[Any]:
+def generate_recommendations(symptoms: List[str]) -> List[str]:
     # Analyze symptoms and generate exercise recommendations using the trained model
     analyzed_symptoms = analyze_symptoms(symptoms)
 
     model = train_model(DATASET)
-    recommended_exercises = model.predict_exercises(analyzed_symptoms)
+    recommended_exercise_indices = model.predict_exercises(analyzed_symptoms)
+
+    # Convert the predicted exercise indices to integers
+    recommended_exercise_indices = [int(index) for index in recommended_exercise_indices]
+
+    # Retrieve the recommended exercises from the DATASET using the indices
+    recommended_exercises = [DATASET['targets'][index] for index in recommended_exercise_indices]
     return recommended_exercises
 
 
 if __name__ == '__main__':
     # Test the model by generating exercise recommendations
-    sample_symptoms = ['pain', 'stiffness', 'swelling', 'loss of appetite']
+    sample_symptoms = list(SYMPTOM_MAPPING.keys())
+    # sample_symptoms = ['pain', 'stiffness', 'swelling', 'loss of appetite', 'fever']
     recommendations = generate_recommendations(sample_symptoms)
     print(recommendations)
