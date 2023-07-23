@@ -6,23 +6,27 @@
 </head>
 <body>
     <h1>Arthritis Physiotherapy Recommender</h1>
-    <form id="symptom-form" method="post" action="/recommendations">
-        <label for="symptoms">Select your symptoms:</label>
-        <select id="symptoms" name="symptoms" multiple>
+    <form id="symptom-form" method="post" action="/">
+        <fieldset>
+            <legend>Select your symptoms:</legend>
             {% for symptom in symptoms %}
-            <option value="{{ symptom }}">{{ symptom }}</option>
+            <label>
+                <input type="checkbox" name="symptoms" value="{{ symptom }}"> {{ symptom }}
+            </label>
             {% endfor %}
-        </select>
+        </fieldset>
         <button type="submit">Submit</button>
     </form>
     <div id="recommendations">
         {% if recommendations %}
-            <p>Recommended exercises:</p>
+            <h2>Recommended exercises:</h2>
             <ul>
                 {% for exercise in recommendations %}
                 <li>{{ exercise }}</li>
                 {% endfor %}
             </ul>
+        {% else %}
+            <p>Please select at least one symptom to receive exercise recommendations.</p>
         {% endif %}
     </div>
 </body>
