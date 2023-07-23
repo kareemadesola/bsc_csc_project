@@ -26,9 +26,21 @@ DATASET = {
         # Add more feature values as needed
     ],
     'targets': [
-        'Exercise A', 'Exercise B', 'Exercise C', 'Exercise D', 'Exercise E',
-        'Exercise F', 'Exercise G', 'Exercise H', 'Exercise I', 'Exercise J',
-        'Exercise K', 'Exercise L', 'Exercise M', 'Exercise N', 'Exercise O',
+        'Leg Press',
+        'Arm Curls',
+        'Shoulder Press',
+        'Walking',
+        'Cycling',
+        'Swimming',
+        'Leg Raises',
+        'Bicep Curls',
+        'Triceps Dips',
+        'Hip Abduction',
+        'Squats',
+        'Bench Press',
+        'Plank',
+        'Lunges',
+        'Push-ups',
         # Add more target values as needed
     ]
 }
