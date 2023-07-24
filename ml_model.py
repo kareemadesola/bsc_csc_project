@@ -44,35 +44,25 @@ def train_model(dataset: Dict[str, Union[List[List[float]], List[Any]]]) -> MLMo
     return model
 
 
-def analyze_symptoms(symptoms: List[str]) -> List[List[float]]:
+def analyze_symptoms(symptoms: List[str]) -> List[float]:
     # Implement the logic to analyze the provided symptoms
     # Process and transform the symptoms data for input to the machine learning model
-    analyzed_symptoms = process_symptoms(symptoms)
-    return analyzed_symptoms
 
+    # Get the list of symptoms from the user input
+    # (This code is not used in the current version of the application, but it is included here for reference.)
+    # user_symptoms = request.form.getlist('symptoms')
 
-def process_symptoms(symptoms: List[str]) -> List[List[float]]:
-    """
-    Process and transform the symptoms data for input to the machine learning model.
+    # Initialize the processed symptoms list
+    processed_symptoms = [0.0, 0.0, 0.0]
 
-    Args:
-        symptoms: List of symptoms provided by the user.
-
-    Returns:
-        List of processed symptoms transformed into numerical values.
-    """
-    processed_symptoms: List[List[float]] = []
-
-    # Implement the logic to process symptoms and transform them into numerical values
+    # Convert each symptom to numerical representation or feature vector
     for symptom in symptoms:
-        # Convert symptom to numerical representation or feature vector
-        # You can use domain-specific knowledge or pre-trained models for symptom representation
-
-        # Example: Convert symptom to a numerical value using a predefined mapping
+        # Get the numerical value for the symptom
         numerical_value = SYMPTOM_MAPPING.get(symptom, 0.0)
 
-        # Append the numerical value to the processed symptoms list
-        processed_symptoms.append([numerical_value])
+        # Update the processed_symptoms list with the numerical value for the symptom
+        for i in range(3):
+            processed_symptoms[i] += numerical_value
 
     return processed_symptoms
 
@@ -82,10 +72,17 @@ def generate_recommendations(symptoms: List[str]) -> List[str]:
     analyzed_symptoms = analyze_symptoms(symptoms)
 
     model = train_model(DATASET)
-    recommended_exercise_indices = model.predict_exercises(analyzed_symptoms)
 
-    # Convert the predicted exercise indices to integers
-    recommended_exercise_indices = [int(index) for index in recommended_exercise_indices]
+    # Flatten the analyzed_symptoms list and reshape it to a 2D array with one row and three columns
+    analyzed_symptoms = np.array(analyzed_symptoms).flatten().reshape(1, -1)
+
+    # Print the shapes of the training features and analyzed symptoms
+    features_shape = np.array(DATASET['features']).shape
+    analyzed_shape = analyzed_symptoms.shape
+    print("Features shape:", features_shape)
+    print("Analyzed symptoms shape:", analyzed_shape)
+
+    recommended_exercise_indices = model.predict_exercises(analyzed_symptoms)
 
     # Retrieve the recommended exercises from the DATASET using the indices
     recommended_exercises = [DATASET['targets'][index] for index in recommended_exercise_indices]
@@ -95,6 +92,5 @@ def generate_recommendations(symptoms: List[str]) -> List[str]:
 if __name__ == '__main__':
     # Test the model by generating exercise recommendations
     sample_symptoms = list(SYMPTOM_MAPPING.keys())
-    # sample_symptoms = ['pain', 'stiffness', 'swelling', 'loss of appetite', 'fever']
     recommendations = generate_recommendations(sample_symptoms)
     print(recommendations)
