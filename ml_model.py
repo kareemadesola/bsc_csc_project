@@ -1,7 +1,7 @@
 from typing import Dict, Union, List, Any, Optional
 
 import numpy as np
-from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 
 from data import SYMPTOM_MAPPING, DATASET
@@ -10,7 +10,7 @@ from data import SYMPTOM_MAPPING, DATASET
 class MLModel:
     def __init__(self):
         # Initialize the machine learning model
-        self.model: Optional[LogisticRegression] = None
+        self.model: Optional[RandomForestClassifier] = None
 
     def train(self, dataset: Dict[str, Union[List[List[float]], List[Any]]]):
         # Implement the training logic for the machine learning model using the provided dataset
@@ -21,11 +21,14 @@ class MLModel:
         targets = dataset['targets']
 
         # Split the data into training and testing sets
-        x_train, x_test, y_train, y_test = train_test_split(features, targets, test_size=0.2, random_state=42)
+        X_train, X_test, y_train, y_test = train_test_split(features, targets, test_size=0.2, random_state=42)
 
         # Initialize and train a logistic regression model
-        self.model = LogisticRegression()
-        self.model.fit(x_train, np.array(y_train).flatten())
+        # rf = RandomForestClassifier(random_state=3)
+        # rf.fit(X_train, y_train)
+        # rf_pred = rf.predict(X_test)
+        self.model = RandomForestClassifier(random_state=3)
+        self.model.fit(X_train, np.array(y_train).flatten())
 
     def predict_exercises(self, analyzed_symptoms: List[List[float]]) -> List[Any]:
         # Implement the prediction logic for the machine learning model
