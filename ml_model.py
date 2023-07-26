@@ -23,10 +23,7 @@ class MLModel:
         # Split the data into training and testing sets
         X_train, X_test, y_train, y_test = train_test_split(features, targets, test_size=0.2, random_state=42)
 
-        # Initialize and train a logistic regression model
-        # rf = RandomForestClassifier(random_state=3)
-        # rf.fit(X_train, y_train)
-        # rf_pred = rf.predict(X_test)
+        # Initialize and train a random forest classifier model
         self.model = RandomForestClassifier(random_state=3)
         self.model.fit(X_train, np.array(y_train).flatten())
 
@@ -51,21 +48,20 @@ def analyze_symptoms(symptoms: List[str]) -> List[float]:
     # Implement the logic to analyze the provided symptoms
     # Process and transform the symptoms data for input to the machine learning model
 
-    # Get the list of symptoms from the user input
-    # (This code is not used in the current version of the application, but it is included here for reference.)
-    # user_symptoms = request.form.getlist('symptoms')
-
     # Initialize the processed symptoms list
     processed_symptoms = [0.0, 0.0, 0.0]
 
-    # Convert each symptom to numerical representation or feature vector
+    # Count the number of symptoms to calculate the average
+    num_symptoms = len(symptoms)
+
+    # Calculate the average numerical value for each symptom
     for symptom in symptoms:
         # Get the numerical value for the symptom
         numerical_value = SYMPTOM_MAPPING.get(symptom, 0.0)
 
         # Update the processed_symptoms list with the numerical value for the symptom
         for i in range(3):
-            processed_symptoms[i] += numerical_value
+            processed_symptoms[i] += numerical_value / num_symptoms
 
     return processed_symptoms
 
@@ -74,16 +70,11 @@ def generate_recommendations(symptoms: List[str]) -> List[str]:
     # Analyze symptoms and generate exercise recommendations using the trained model
     analyzed_symptoms = analyze_symptoms(symptoms)
 
-    model = train_model(DATASET)
-
     # Flatten the analyzed_symptoms list and reshape it to a 2D array with one row and three columns
     analyzed_symptoms = np.array(analyzed_symptoms).flatten().reshape(1, -1)
 
-    # Print the shapes of the training features and analyzed symptoms
-    features_shape = np.array(DATASET['features']).shape
-    analyzed_shape = analyzed_symptoms.shape
-    print("Features shape:", features_shape)
-    print("Analyzed symptoms shape:", analyzed_shape)
+    # Load the pre-trained model or train it once and save it for future use
+    model = train_model(DATASET)
 
     recommended_exercise_indices = model.predict_exercises(analyzed_symptoms)
 
