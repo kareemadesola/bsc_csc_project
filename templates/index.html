@@ -5,11 +5,11 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <h1>Arthritis Physiotherapy Recommender</h1>
-    <form id="symptom-form" method="post" action="/">
-        <fieldset>
-            <legend>Select your symptoms:</legend>
-            {% for symptom in symptoms %}
+<h1>Arthritis Physiotherapy Recommender</h1>
+<form id="symptom-form" method="post" action="/">
+    <fieldset>
+        <legend>Select Your Symptoms:</legend>
+        {% for symptom in symptoms %}
             <label>
                 <input type="checkbox" name="symptoms" value="{{ symptom }}"> {{ symptom }}
             </label>
@@ -19,7 +19,7 @@
     </form>
     <div id="recommendations">
         {% if recommendations %}
-            <h2>Recommended exercises:</h2>
+            <h2>Recommended exercise:</h2>
             <ul>
                 {% for exercise in recommendations %}
                 <li>{{ exercise }}</li>
