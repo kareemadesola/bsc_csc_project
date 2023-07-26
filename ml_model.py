@@ -1,4 +1,4 @@
-from typing import Dict, Union, List, Any, Optional
+from typing import List
 
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
@@ -10,9 +10,9 @@ from data import SYMPTOM_MAPPING, DATASET
 class MLModel:
     def __init__(self):
         # Initialize the machine learning model
-        self.model: Optional[RandomForestClassifier] = None
+        self.model = RandomForestClassifier(random_state=3)
 
-    def train(self, dataset: Dict[str, Union[List[List[float]], List[Any]]]):
+    def train(self, dataset):
         # Implement the training logic for the machine learning model using the provided dataset
         # Train the model to generate exercise recommendations based on symptoms
 
@@ -21,13 +21,12 @@ class MLModel:
         targets = dataset['targets']
 
         # Split the data into training and testing sets
-        X_train, X_test, y_train, y_test = train_test_split(features, targets, test_size=0.2, random_state=42)
+        X_train, _, y_train, _ = train_test_split(features, targets, test_size=0.2, random_state=42)
 
-        # Initialize and train a random forest classifier model
-        self.model = RandomForestClassifier(random_state=3)
+        # Train the model
         self.model.fit(X_train, np.array(y_train).flatten())
 
-    def predict_exercises(self, analyzed_symptoms: List[List[float]]) -> List[Any]:
+    def predict_exercises(self, analyzed_symptoms):
         # Implement the prediction logic for the machine learning model
         # Use the trained model to generate exercise recommendations based on analyzed symptoms
 
@@ -37,11 +36,9 @@ class MLModel:
         return predicted_indices
 
 
-def train_model(dataset: Dict[str, Union[List[List[float]], List[Any]]]) -> MLModel:
-    # Train the machine learning model using the dataset
-    model = MLModel()
-    model.train(dataset)
-    return model
+# Initialize the model and train it once
+model = MLModel()
+model.train(DATASET)
 
 
 def analyze_symptoms(symptoms: List[str]) -> List[float]:
@@ -72,9 +69,6 @@ def generate_recommendations(symptoms: List[str]) -> List[str]:
 
     # Flatten the analyzed_symptoms list and reshape it to a 2D array with one row and three columns
     analyzed_symptoms = np.array(analyzed_symptoms).flatten().reshape(1, -1)
-
-    # Load the pre-trained model or train it once and save it for future use
-    model = train_model(DATASET)
 
     recommended_exercise_indices = model.predict_exercises(analyzed_symptoms)
 
