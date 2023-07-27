@@ -40,12 +40,14 @@ select {
 
 button {
     display: block;
+    margin: 0 auto; /* Center the button horizontally */
     margin-top: 10px;
-    padding: 10px;
+    padding: 15px 40px; /* Increase padding to make the button wider */
+    font-size: 18px; /* Increase font size to make the button text bigger */
     background-color: #3498db;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 50px; /* Set border-radius to create an oval shape */
     cursor: pointer;
 }
 
@@ -80,4 +82,37 @@ li {
 
 .custom-alert p {
     margin: 0;
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+    /* Adjust styles for screens with a maximum width of 768px or smaller */
+    h1 {
+        font-size: 24px;
+    }
+
+    button {
+        padding: 12px 30px;
+        font-size: 16px;
+    }
+
+    #recommendations {
+        padding: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    /* Adjust styles for screens with a maximum width of 480px or smaller */
+    select {
+        height: 150px;
+    }
+
+    button {
+        padding: 10px 25px;
+        font-size: 14px;
+    }
+
+    .custom-alert {
+        padding: 8px;
+    }
 }
