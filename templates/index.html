@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
+
 <h1>Arthritis Physiotherapy Recommender</h1>
 <form id="symptom-form" method="post" action="/">
     <fieldset>
@@ -13,21 +14,21 @@
             <label>
                 <input type="checkbox" name="symptoms" value="{{ symptom }}"> {{ symptom }}
             </label>
-            {% endfor %}
-        </fieldset>
-        <button type="submit">Submit</button>
-    </form>
-    <div id="recommendations">
-        {% if recommendations %}
-            <h2>Recommended Exercise:</h2>
-            <ul>
-                {% for exercise in recommendations %}
+        {% endfor %}
+    </fieldset>
+    <button type="submit">Submit</button>
+</form>
+<div id="recommendations">
+    {% if recommendations %}
+        <h2>Recommended Exercise:</h2>
+        <ul>
+            {% for exercise in recommendations %}
                 <li>{{ exercise }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p class="custom-alert">Please select at least one symptom to receive exercise recommendations.</p>
-        {% endif %}
-    </div>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="custom-alert">Please select at least one symptom to receive exercise recommendations.</p>
+    {% endif %}
+</div>
 </body>
 </html>
